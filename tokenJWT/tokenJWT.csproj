@@ -3,19 +3,79 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
+    <Content Include="wwwroot\css\AdminLTE.css" />
+    <Content Include="wwwroot\css\adminlte.css.map" />
+    <Content Include="wwwroot\css\AdminLTE.min.css" />
+    <Content Include="wwwroot\css\adminlte.min.css.map" />
+    <Content Include="wwwroot\css\alt\AdminLTE-bootstrap-social.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-bootstrap-social.min.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-fullcalendar.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-fullcalendar.min.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-select2.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-select2.min.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-without-plugins.css" />
+    <Content Include="wwwroot\css\alt\AdminLTE-without-plugins.min.css" />
+    <Content Include="wwwroot\css\skins\skin-black-light.css" />
+    <Content Include="wwwroot\css\skins\skin-black-light.min.css" />
+    <Content Include="wwwroot\css\skins\skin-black.css" />
+    <Content Include="wwwroot\css\skins\skin-black.min.css" />
+    <Content Include="wwwroot\css\skins\skin-blue-light.css" />
+    <Content Include="wwwroot\css\skins\skin-blue-light.min.css" />
+    <Content Include="wwwroot\css\skins\skin-blue.css" />
+    <Content Include="wwwroot\css\skins\skin-blue.min.css" />
+    <Content Include="wwwroot\css\skins\skin-green-light.css" />
+    <Content Include="wwwroot\css\skins\skin-green-light.min.css" />
+    <Content Include="wwwroot\css\skins\skin-green.css" />
+    <Content Include="wwwroot\css\skins\skin-green.min.css" />
+    <Content Include="wwwroot\css\skins\skin-purple-light.css" />
+    <Content Include="wwwroot\css\skins\skin-purple-light.min.css" />
+    <Content Include="wwwroot\css\skins\skin-purple.css" />
+    <Content Include="wwwroot\css\skins\skin-purple.min.css" />
+    <Content Include="wwwroot\css\skins\skin-red-light.css" />
+    <Content Include="wwwroot\css\skins\skin-red-light.min.css" />
+    <Content Include="wwwroot\css\skins\skin-red.css" />
+    <Content Include="wwwroot\css\skins\skin-red.min.css" />
+    <Content Include="wwwroot\css\skins\skin-yellow-light.css" />
+    <Content Include="wwwroot\css\skins\skin-yellow-light.min.css" />
+    <Content Include="wwwroot\css\skins\skin-yellow.css" />
+    <Content Include="wwwroot\css\skins\skin-yellow.min.css" />
+    <Content Include="wwwroot\css\skins\_all-skins.css" />
+    <Content Include="wwwroot\css\skins\_all-skins.min.css" />
+    <Content Include="wwwroot\js\app.js" />
+    <Content Include="wwwroot\js\app.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ApiData\" />
+    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.2" />
+    <PackageReference Include="Dapper.Contrib" Version="1.50.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.1.4" />
+    <PackageReference Include="System.Security.Cryptography.Csp" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fanlihang.Token\Fanlihang.Auth.csproj" />
+  </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="http://json.schemastore.org/bower" /></VisualStudio></ProjectExtensions>
 
 </Project>
