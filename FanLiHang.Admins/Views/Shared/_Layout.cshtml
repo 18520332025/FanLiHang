@@ -1,0 +1,71 @@
+﻿
+
+<html>
+<head>
+    <title>权限管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv=Content-Type content=texthtml; charset=utf-8>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/AdminLTE.css">
+    <link rel="stylesheet" href="~/css/datatables.css" />
+    <!--皮肤-->
+    <link rel="stylesheet" href="~/css/skins/skin-blue.css">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/app.js"></script>
+    <script src="~/js/modalManage.js"></script>
+    <script src="~/js/imageHelper.js"></script>
+    <script src="~/js/jquery.form.js"></script>
+    <style type="text/css">
+        .nav-tabs > li.active > a {
+            border-radius: 15px 15px 0 0;
+        }
+    </style>
+    <script type="text/javascript">
+        function reloadThisPage() {
+            window.parent.reloadTab("@ViewBag.DocumentName");
+        }
+
+        $(function () {
+            $(".EditLabel").click(function () {
+                var id = $(this).attr("data-bind");
+                var actionName = $(this).attr("action-name");
+                var height = $(this).attr('model-height');
+                modelIfram(actionName + '/' + id, { height: height, title: '编辑'});
+            })
+
+
+            $(".DeleteLabel").click(function () {
+                var id = $(this).attr("data-bind");
+                var actionName = $(this).attr("action-name");
+                modelConfirm('是否删除所选?', {
+                    title: '确认删除',
+                    submit: function () {
+                        $.post(actionName + '/' + id,
+                            { ID: id },
+                            function (data) {
+                                if (data.stateCode == 200) {
+                                    modelMessage("删除成功", {
+                                        closeReload: true
+                                    });
+                                }
+                                else {
+                                    modelMessage("删除失败" + data.errors);
+                                }
+                            })
+                    }
+                })
+            })
+
+        })
+
+
+    </script>
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>

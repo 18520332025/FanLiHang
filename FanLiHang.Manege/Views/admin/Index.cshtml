@@ -1,0 +1,145 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>权限管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta http-equiv=Content-Type content=texthtml; charset=utf-8>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/css/AdminLTE.css">
+    <link rel="stylesheet" href="~/css/datatables.css" />
+    <!--皮肤-->
+    <link rel="stylesheet" href="~/css/skins/skin-blue.css">
+    <style type="text/css">
+        .nav-tabs > li.active > a {
+            border-radius: 15px 15px 0 0;
+        }
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <a href="/admin/index" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>F</b>LH</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>Admin</b>FLH</span>
+            </a>
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="javascript:;" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="~/images/user3-128x128.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">Alexander Pierce</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="~/images/user3-128x128.jpg" class="img-circle" alt="User Image">
+                                    <p>
+                                        Alexander Pierce - Web Developer
+                                        <small>Member since Nov. 2012</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <a href="/login/LoginOut" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- Control Sidebar Toggle Button -->
+                        <li>
+                            <a href="javascript:;" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar">
+            <section class="sidebar" style="height: auto;">
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        <img src="~/images/user3-128x128.jpg" class="img-circle" alt="User Image">
+                    </div>
+                    <div class="pull-left info">
+                        <p>Alexander Pierce</p>
+                        <a href="javascript:;"><i class="fa fa-circle text-success"></i> Online</a>
+                    </div>
+                </div>
+                <form action="javascript:;" method="get" class="sidebar-form">
+                    <div class="input-group">
+                        <input name="q" class="form-control" placeholder="Search..." type="text">
+                        <span class="input-group-btn">
+                            <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+                <ul class="sidebar-menu tree" data-widget="tree">
+                    <li class="header">权限管理</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li class="active"><a href="javascript:;" onclick="switchTab({name:'department_index',url:'/department/index',title:'组织机构'})"><i class="fa fa-link"></i> <span>组织机构</span></a></li>
+                    <li><a href="javascript:;"><i class="fa fa-link"></i> <span>角色管理</span></a></li>
+                    <li><a href="javascript:;"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
+                    <li><a href="javascript:;"><i class="fa fa-link"></i> <span>功能管理</span></a></li>
+                    <li><a href="javascript:;"><i class="fa fa-link"></i> <span>权限管理</span></a></li>
+                </ul>
+            </section>
+        </aside>
+        <section class="content-wrapper">
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs" style="margin-top:2px;margin-left:0px;" id="tabList">
+                                <li class="active"><a href="#admin_welcome" data-toggle="tab">首页　<i class="fa fa-close" style="cursor:pointer"></i></a></li>
+                                <li class="pull-right" id="tab-refresh"><a href="javascript:;"><i class="fa  fa-refresh" onclick="reloadTab()"></i></a></li>
+                            </ul>
+                            <div class="tab-content" id="tab-content">
+                                <div class="tab-pane active" id="admin_welcome">
+                                    <iframe src="/admin/Welcome" scrolling="no" frameborder="0" id="if_admin_welcome" style="width:100%"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <aside class="control-sidebar control-sidebar-dark">
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active"><a href="#control-sidebar-theme-demo-options-tab" data-toggle="tab"><i class="fa fa-wrench"></i></a></li>
+                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+            <div class="tab-content"></div>
+        </aside>
+    </div>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/js/app.js"></script>
+<script type="text/javascript" src="~/js/tabManage.js"></script>
+@*<script>
+    $(function(){
+       int_admin_welcome= startIframeInit("if_admin_welcome",500);
+    });
+
+</script>*@

@@ -1,0 +1,37 @@
+﻿@model PagerResultSet<UserAuthorization>
+<section class="content ifram-content">
+    <button type="submit" class="btn btn-info" onclick="modelIfram('/User/AuthAdd/@ViewBag.UserID',{height:550,title:'新建机构'})">新建授权</button>
+    @if (Model.Rows.Count > 0)
+    {
+        <table class="table table-bordered  dataTable" style="border-color:#eee">
+            <thead>
+                <tr role="row">
+                    <th><input type="checkbox" /></th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].ID)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].LoginID)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].Password)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].AppInfo.Name)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].Department.Name)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var userAuthorization in Model.Rows)
+                {
+                    <tr role="row">
+                        <td><input type="checkbox" /></td>
+                        <td>@userAuthorization.ID</td>
+                        <td>@userAuthorization.LoginID</td>
+                        <td>@userAuthorization.Password</td>
+                        <td>@userAuthorization.AppInfo.Name</td>
+                        <td>@userAuthorization.Department.Name</td>
+                        <td>
+                            <edit-label id="@userAuthorization.ID" model-height="400" action-name="/User/AuthEdit"></edit-label>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>
+@*@{await Html.RenderPartialAsync("Pager", Model.Pager);}*@ 

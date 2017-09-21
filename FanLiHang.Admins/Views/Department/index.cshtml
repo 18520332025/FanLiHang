@@ -1,0 +1,40 @@
+﻿@model PagerResultSet<Department>
+<section class="content ifram-content">
+    <button type="submit" class="btn btn-info" onclick="modelIfram('/Department/Add',{height:250,title:'新建机构'})">新建机构</button>
+    <button type="submit" class="btn btn-danger" onclick="modelConfirm('是否删除选部门?',{title:'确认删除',submit:deleteList})">删除所选</button>
+    @if (Model.Rows.Count > 0)
+    {
+        <table class="table table-bordered  dataTable" style="border-color:#eee">
+            <thead>
+                <tr role="row">
+                    <th><input type="checkbox" /></th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].ID)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].Name)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].Manager)</th>
+                    <th>@Html.DisplayNameFor(x => x.Rows[0].Deleted)</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var department in Model.Rows)
+                {
+                    <tr role="row">
+                        <td><input type="checkbox" /></td>
+                        <td>@department.ID</td>
+                        <td>@department.Name</td>
+                        <td>@department.ManagerUser.Name</td>
+                        <td><small class="label @(!department.Deleted ? "bg-green" : "bg-danger") ">@(department.Deleted ? "无效" : "有效")</small></td>
+                        <td>
+                            @if (!department.Deleted)
+                            {
+                                <edit-label id="@department.ID"></edit-label>                                
+                                <delete-label id="@department.ID"></delete-label>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</section>
+@{await Html.RenderPartialAsync("Pager", Model.Pager);} 

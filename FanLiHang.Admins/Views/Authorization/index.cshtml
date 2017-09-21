@@ -1,0 +1,87 @@
+﻿
+<link href="~/lib/bootstrap-treeview/src/css/bootstrap-treeview.css" type="text/css" rel="stylesheet" />
+<script src="~/lib/bootstrap-treeview/src/js/bootstrap-treeview.js" type="text/javascript"></script>
+<section class="content ifram-content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">配置节点</h3>
+                    <h4><app-info-drop-down-list id="setAppID" class="form-control" selected="@ViewBag.AppInfoID"></app-info-drop-down-list></h4>
+                </div>
+                <div class="box-body">
+
+                    <div id="tree">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title" id="formTitle">权限列表</h3>
+                </div>
+                <div class="box-body">
+                    <div id="power">
+
+                    </div>
+                    <button type="submit" class="btn btn-danger" onclick="save()" id="formSubBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var data = @Json.Serialize(ViewBag.DepartmentList);
+    $(function () {
+           $("#tree").treeview({
+            data: data,
+            selectedIcon: 'fa fa-wrench',
+            onNodeSelected: switchNode
+        });
+        $("#setAppID").change(function () {
+            window.location.href = 'Authorization/Index/' + $("#setAppID").val();
+        })
+    })
+
+    var ques = {};
+    function switchNode(event, node) {
+        ques.functionPowerType = node.functionPowerType;
+        ques.nodeID = node.id;
+        ques.appInfoID=@ViewBag.AppInfoID;
+        var url = '/Authorization/GetPowers?Type=' + node.functionPowerType + '&nodeID=' + node.id + '&appInfoID=@ViewBag.AppInfoID';
+        $.getJSON(url, function (data) {
+            $("#power").treeview({
+                data: data,
+                showCheckbox: true,
+                checkedIcon: 'fa fa-check-circle',
+                uncheckedIcon: 'fa fa-circle-o',
+                levels: 3,
+                collapseIcon: 'fa  fa-minus-square-o',
+                expandIcon: 'fa fa-plus-square-o',
+                highlightSelected: false
+            })
+            setInterval('unbindVP()', 100);
+        });
+    }
+
+    function save() {
+        var nodes = $("#power").treeview('getChecked');
+        var powerList = new Array();
+        for (var i = 0; i < nodes.length; i++) {
+            if (!nodes[i].requisite) {
+                powerList[powerList.length] = nodes[i].id;
+            }
+        }
+        ques.powerList = powerList;
+        $.post('/Authorization/Save', ques, function (data) { 
+
+        }, 'json');
+    }
+
+    function unbindVP(event, node) {
+        $(".vp-requisite").next().click(function (event) { event.stopPropagation(); });
+    }
+
+</script>

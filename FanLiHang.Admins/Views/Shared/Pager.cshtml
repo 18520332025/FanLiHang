@@ -1,0 +1,24 @@
+﻿@model PagerInfor
+@if (Model.Total > 0)
+{
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">第 @Model.StartRow - @Model.EndRow 条记录 总计 @Model.Total 条记录</div>
+        </div>
+        <div class="col-sm-7">
+            <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                <ul class="pagination">
+                    <li class="paginate_button previous @(Model.HasPrevious?"":"disabled")" id="example2_previous"><a href="?PageIndex=1" aria-controls="example2" data-dt-idx="0" tabindex="0">第一页</a></li>
+                    @for (int pageIndex = Model.ViewStartPageIndex; pageIndex <= Model.ViewEndPageIndex; pageIndex++)
+                    {
+                        <li class="paginate_button @(Model.PagerParameter.PageIndex==pageIndex?"active":"")">
+                            <a href="?PageIndex=@(pageIndex)" aria-controls="example2" data-dt-idx="@(pageIndex)" tabindex="0">@(pageIndex < 10 ? "0" + pageIndex : pageIndex.ToString())</a>
+                        </li>
+                    }
+                    <li class="paginate_button next @(Model.HasNext?"":"disabled")" id="example2_next"><a href="?PageIndex=@(Model.PageCount)" aria-controls="example2" data-dt-idx="7" tabindex="0">最后一页</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+}

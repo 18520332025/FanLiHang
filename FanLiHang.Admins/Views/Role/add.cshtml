@@ -1,0 +1,28 @@
+﻿@model Role
+<section class="content ifram-content">
+    <form class="form-horizontal" id="userForm" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label asp-for="RoleName" class="col-sm-3 control-label">@Html.DisplayNameFor(x => x.RoleName)</label>
+            <div class="col-sm-8">
+                <input asp-for="RoleName" class="form-control" />
+                <input name="ID" id="ID" value="@Model.ID" type="hidden" />
+                <input asp-for="DepartmentID" type="hidden" />
+            </div>
+        </div>
+    </form>
+    <div style="margin:0 auto;text-align:center">
+        <button type="button" class="btn btn-danger modelSub" onclick="submit()">保 存</button>
+    </div>
+</section>
+<script type="text/javascript">
+
+    function submit() {
+        $("#userForm").ajaxSubmit({
+            url: '/role/save',
+            success: function () {
+                modelMessage('保存成功');
+                window.parent.location.reload(true);
+            }
+        });
+    }
+</script>

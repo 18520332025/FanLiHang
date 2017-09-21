@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FanLiHang.Dapper.Helper\FanLiHang.Dapper.Helper.csproj" />
+    <ProjectReference Include="..\FanLiHang.Dapper.Model.Attribute\FanLiHang.Dapper.Model.Attribute.csproj" />
+    <ProjectReference Include="..\FanLiHang.Model\FanLiHang.Model.csproj" />
+  </ItemGroup>
+
+</Project>

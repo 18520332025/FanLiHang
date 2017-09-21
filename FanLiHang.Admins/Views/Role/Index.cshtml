@@ -1,0 +1,76 @@
+﻿@model PagerResultSet<Role>
+<link href="~/lib/bootstrap-treeview/src/css/bootstrap-treeview.css" type="text/css" rel="stylesheet" />
+<script src="~/lib/bootstrap-treeview/src/js/bootstrap-treeview.js" type="text/javascript"></script>
+<section class="content ifram-content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">部门列表</h3>
+                </div>
+                <div class="box-body">
+
+                    <div id="tree">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title" id="formTitle">角色列表-@ViewBag.Department.Name</h3>
+                </div>
+                <div class="box-body">
+                    <button type="submit" class="btn btn-info" onclick="modelIfram('/Role/Add/@ViewBag.Department.ID',{height:120,title:'新建角色'})">新建角色</button>
+                    @if (Model.Rows.Count > 0)
+                    {
+                        <table class="table table-bordered  dataTable" style="border-color:#eee">
+                            <thead>
+                                <tr role="row">
+                                    <th>@Html.DisplayNameFor(x => x.Rows[0].ID)</th>
+                                    <th>@Html.DisplayNameFor(x => x.Rows[0].RoleName)</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var role in Model.Rows)
+                                {
+                                    <tr role="row">
+                                        <td>@role.ID</td>
+                                        <td>@role.RoleName</td>
+                                        <th>
+                                            <edit-label id="@role.ID" action-name="/role/edit" model-height="120"></edit-label>
+                                        </th>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        await Html.RenderPartialAsync("Pager", Model.Pager);
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var data = @Json.Serialize(ViewBag.DepartmentList);
+    $(function () {
+
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].id == @ViewBag.Department.ID){
+                data[i].state = { selected: true };
+            }
+        }
+        $("#tree").treeview({
+            data: data,
+            "state.selected": true,
+            selectedIcon: 'fa fa-wrench',
+            onNodeSelected: switchNode
+        });
+    });
+    function switchNode(event, node) {
+        window.location.href = "/Role/Index/" + node.id;
+    }
+</script>

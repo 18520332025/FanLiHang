@@ -1,0 +1,162 @@
+﻿@model FunctionPower
+<link href="~/lib/bootstrap-treeview/src/css/bootstrap-treeview.css" type="text/css" rel="stylesheet" />
+<script src="~/lib/bootstrap-treeview/src/js/bootstrap-treeview.js" type="text/javascript"></script>
+<section class="content ifram-content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">权限列表</h3>
+                    <h4><app-info-drop-down-list id="setAppID" class="form-control" selected="@Model.AppInfoID"></app-info-drop-down-list></h4>
+                </div>
+                <div class="box-body">
+
+                    <div id="tree">
+
+                    </div>
+                    <button type="submit" class="btn btn-info" onclick="addNode()">添加权限</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title" id="formTitle"></h3>
+                </div>
+                <div class="box-body">
+                    <form asp-action="Save" id="formFunctionPower">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="AppInfoID" />
+                            <input type="hidden" asp-for="ID" />
+                            <input type="hidden" asp-for="FatharFunctionID" />
+                            <input type="hidden" asp-for="Level" />
+                            <label asp-for="FunctionName" class="col-sm-3 control-label"></label>
+                            <input asp-for="FunctionName" class="form-control" />
+                            <span asp-validation-for="FunctionName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="FunctionType" class="col-sm-3 control-label"></label>
+                            <input asp-for="FunctionType" class="form-control" />
+                            <span asp-validation-for="FunctionType" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Url" class="col-sm-3 control-label"></label>
+                            <input asp-for="Url" class="form-control" />
+                            <span asp-validation-for="Url" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Power" class="col-sm-3 control-label"></label>
+                            <input asp-for="Power" class="form-control" />
+                            <span asp-validation-for="Power" class="text-danger"></span>
+                        </div>
+                        @*<div class="form-group">
+                                <label asp-for="AppInfoID" class="col-sm-3 control-label"></label>
+                                <app-info-drop-down-list selected="@Model[0].AppInfoID" class="form-control" id="appInfoID" name="appInfoID"></app-info-drop-down-list>
+                                <span asp-validation-for="AppInfoID" class="text-danger"></span>
+                            </div>*@
+                        <div class="form-group">
+                            <label asp-for="Sort" class="col-sm-3 control-label"></label>
+                            <input asp-for="Sort" class="form-control" />
+                            <span asp-validation-for="Sort" class="text-danger"></span>
+                        </div>
+                    </form>
+
+                    <button type="submit" class="btn btn-danger" onclick="save()" id="formSubBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var data = @Json.Serialize(ViewBag.List);
+    var defaultNode = {
+        functionName: '',
+        functionType: '',
+        url: '',
+        power: '',
+        sort:'',
+        appInfoID: @Model.AppInfoID,
+        id: 0,
+        fatharFunctionID: 0,
+        functionName: '',
+        fatharFunctionName: '根节点'
+    }
+
+    function save() {
+
+        $("#formFunctionPower").ajaxSubmit({
+            url: '/functionPower/save',
+            success: function () {
+                modelMessage('保存成功');
+                window.location.reload(true);
+            }
+        });
+    }
+
+    function switchNode(event, node) {
+        $("#FunctionName").val(node.functionName);
+        $("#FunctionName").focus();
+        $("#FunctionType").val(node.functionType);
+        $("#Url").val(node.url);
+        $("#Power").val(node.power);
+        $("#Sort").val(node.sort);
+        $("#AppInfoID").val(node.appInfoID);
+        $("#ID").val(node.id);
+        $("#FatharFunctionID").val(node.fatharFunctionID);
+        $("#Level").val(node.level);
+        if (node.id != 0) {
+            $("#formTitle").text(node.functionName +'-修改');
+            $("#formSubBtn").text("保存修改");
+        }
+        else {
+            $("#formTitle").text(node.fatharFunctionName + '-添加权限');
+            $("#formSubBtn").text("确定添加");
+        }
+    }
+
+    function addNode() {
+        var node = $("#tree").treeview('getSelected');
+        if (node.length == 0) {
+            modelConfirm('未选择节点，是否添加根节点？', {
+                submit: function () {
+
+                    var copyNode = jQuery.extend(true, {}, defaultNode);
+                    if (data.length > 0) {
+                        copyNode.sort = data[data.length - 1].sort + 1
+                    } else {
+                        copyNode.sort = 1;
+                    }
+                    copyNode.level = 1;
+                    switchNode(null, copyNode);
+                    $("#modelConfirm").modal("hide");
+                }
+            });
+        }
+        else {
+            var copyNode = jQuery.extend(true, {}, defaultNode);
+            copyNode.fatharFunctionID = node[0].id;
+            copyNode.fatharFunctionName = node[0].functionName;
+            if (node[0].nodes != undefined) {
+                copyNode.sort = node[0].nodes[node[0].nodes.length - 1].sort + 1;
+            }
+            else {
+                copyNode.sort = 1;
+            }
+            copyNode.level = node[0].level + 1;
+            switchNode(null, copyNode)
+        }
+    }
+
+    $(function () {
+        $("#tree").treeview({
+            data: data,
+            "state.selected": true,
+            selectedIcon: 'fa fa-wrench',
+            onNodeSelected: switchNode
+        });
+        $("#setAppID").change(function () {
+            window.location.href = '/functionPower/index/' + $("#setAppID").val();
+        });
+    });
+</script>

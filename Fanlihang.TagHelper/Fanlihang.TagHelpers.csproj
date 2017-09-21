@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FanLiHang.Dapper.Helper\FanLiHang.Dapper.Helper.csproj" />
+    <ProjectReference Include="..\FanLiHang.Dapper.Model.Attribute\FanLiHang.Dapper.Model.Attribute.csproj" />
+    <ProjectReference Include="..\FanLiHang.Data\FanLiHang.Data.csproj" />
+    <ProjectReference Include="..\FanLiHang.Model\FanLiHang.Model.csproj" />
+  </ItemGroup>
+
+</Project>
