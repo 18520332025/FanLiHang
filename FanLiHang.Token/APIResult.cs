@@ -32,7 +32,7 @@ namespace FanLiHang.Auth
             this.data = default(T);
             this.errors = "认证失败";
             this.scuess = false;
-            this.stateCode = 404;
+            this.stateCode = 401;
         }
 
     }

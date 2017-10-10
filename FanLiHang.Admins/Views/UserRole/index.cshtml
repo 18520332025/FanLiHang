@@ -1,0 +1,98 @@
+﻿@model IEnumerable<UserPower>
+<section class="content ifram-content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">用户</h3>
+                </div>
+                <div class="box-body">
+                    <ul class="nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle callout callout-info" data-toggle="dropdown">
+                                <img src="@ViewBag.BindUser.PhotoUrl" style="max-height:25px;" alt="User Image">
+                                <span class="hidden-xs">@ViewBag.BindUser.Name</span>
+                                <span style="float:right;margin-top:5px;" id="btnAccountConfig">
+                                    <edit-label id="@ViewBag.BindUser.ID" model-height="550" action-name="/User/SetAuth" text="帐号管理"></edit-label>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu" style="width:100%;">
+                                @foreach (UserInfo item in ViewBag.Users)
+                                {
+                                    <li>
+                                        <a href="?UserID=@item.ID" style="line-height:40px;">
+                                            <img src="@item.PhotoUrl" style="max-height:25px;" alt="User Image">
+                                            <span class="hidden-xs">@item.Name</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                    <h4>帐号</h4>
+                    @if (ViewBag.Account != null)
+                    {
+                        <ul class="nav" style="padding-left:0">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle callout callout-danger" data-toggle="dropdown">
+                                    <span class="hidden-xs">@ViewBag.Account.LoginID</span>
+                                </a>
+                                <ul class="dropdown-menu" style="width:100%;">
+                                    @foreach (UserAuthorization auth in ViewBag.AccountList)
+                                    {
+                                        <li>
+                                            <a href="?UserID=@ViewBag.BindUser.ID&AccountID=@auth.ID" style="line-height:40px;">
+                                                <span class="hidden-xs">@auth.LoginID</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title" id="formTitle">授权角色</h3>
+                </div>
+                <div class="box-body">
+                    <button type="submit" class="btn btn-info" onclick="modelIfram('/UserRole/Edit?AccountID=@ViewBag.Account.ID',{height:150,title:'新建授权'})">新建授权</button>
+                    @if (Model.Count() > 0)
+                    {
+                        <table class="table table-bordered  dataTable" style="border-color:#eee">
+                            <thead>
+                                <tr role="row">
+                                    <th>@Html.DisplayNameFor(x => x.First().Role.RoleName)</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var role in Model)
+                                {
+                                    <tr role="row">
+                                        <td>@role.Role.RoleName</td>
+                                        <td>
+                                            <edit-label text="修改授权" action-name="/UserRole/Edit?UserID=@role.ID&AccountID=@ViewBag.Account.ID" model-height="150"></edit-label>
+                                            <delete-label id="role.RoleID"></delete-label>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(function () {
+        $("#btnAccountConfig").click(config);
+    })
+    function config(tag, event) {
+        event.stopPropagation();
+    }
+</script>

@@ -39,8 +39,18 @@
     }
 
     function onError(error, inputElement) {  // 'this' is the form element
-        var container = $(this).find("[data-valmsg-for='" + escapeAttributeValue(inputElement[0].name) + "']"),
-            replaceAttrValue = container.attr("data-valmsg-replace"),
+        var isRemote = $(inputElement[0]).attr("data-val-remote-group");
+
+        var container = null;
+        if (isRemote) {
+            name = $(inputElement[0]).attr("data-val-remote-group");
+            container = $(this).find("[data-valmsg-for-group='" + name + "']");
+        }
+        else {
+            container = $(this).find("[data-valmsg-for='" + escapeAttributeValue(inputElement[0].name) + "']");
+        }
+
+        var replaceAttrValue = container.attr("data-valmsg-replace"),
             replace = replaceAttrValue ? $.parseJSON(replaceAttrValue) !== false : null;
 
         container.removeClass("field-validation-valid").addClass("field-validation-error");
@@ -107,7 +117,7 @@
             .removeClass("field-validation-error")
             .removeData("unobtrusiveContainer")
             .find(">*")  // If we were using valmsg-replace, get the underlying error
-                .removeData("unobtrusiveContainer");
+            .removeData("unobtrusiveContainer");
     }
 
     function validationInfo(form) {
@@ -203,7 +213,6 @@
                     });
                 }
             });
-
             $.extend(rules, { "__dummy__": true });
 
             if (!skipAttach) {
@@ -223,10 +232,10 @@
             // element with data-val=true
             var $selector = $(selector),
                 $forms = $selector.parents()
-                                  .addBack()
-                                  .filter("form")
-                                  .add($selector.find("form"))
-                                  .has("[data-val=true]");
+                    .addBack()
+                    .filter("form")
+                    .add($selector.find("form"))
+                    .has("[data-val=true]");
 
             $selector.find("[data-val=true]").each(function () {
                 $jQval.unobtrusive.parseElement(this, true);
@@ -377,10 +386,9 @@
         var value = {
             url: options.params.url,
             type: options.params.type || "GET",
-            data: {}
+            data: {},
         },
             prefix = getModelPrefix(options.element.name);
-
         $.each(splitAndTrim(options.params.additionalfields || options.element.name), function (i, fieldName) {
             var paramName = appendModelPrefix(fieldName, prefix);
             value.data[paramName] = function () {
@@ -395,6 +403,7 @@
                 return field.val();
             };
         });
+
 
         setValidationValues(options, "remote", value);
     });

@@ -2,7 +2,7 @@
 <section class="content ifram-content">
     <button type="submit" class="btn btn-info" onclick="modelIfram('/Department/Add',{height:250,title:'新建机构'})">新建机构</button>
     <button type="submit" class="btn btn-danger" onclick="modelConfirm('是否删除选部门?',{title:'确认删除',submit:deleteList})">删除所选</button>
-    @if (Model.Rows.Count > 0)
+    @if ( Model.Rows.Count > 0)
     {
         <table class="table table-bordered  dataTable" style="border-color:#eee">
             <thead>
@@ -27,7 +27,7 @@
                         <td>
                             @if (!department.Deleted)
                             {
-                                <edit-label id="@department.ID"></edit-label>                                
+                                <edit-label id="@department.ID"></edit-label>
                                 <delete-label id="@department.ID"></delete-label>
                             }
                         </td>

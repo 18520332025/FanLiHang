@@ -61,13 +61,18 @@ namespace FanLiHang.Admins.Auth
         private string[] GetServicePowers(string token)
         {
             HttpClient client = new HttpClient();
-            //HttpWebRequest request = new HttpWebRequest();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             string response = client.GetAsync("http://localhost:33071/api/GetPowers").Result.Content.ReadAsStringAsync().Result;
-            var obj = JsonConvert.DeserializeObject<AuthReponse<string[]>>(response);
-            return obj.data;
+            if (string.IsNullOrEmpty(response))
+            {
+                throw new AccessViolationException();
+            }
+            else
+            {
+                var obj = JsonConvert.DeserializeObject<AuthReponse<string[]>>(response);
+                return obj.data;
+            }
         }
 
         public class AuthReponse<T>
@@ -102,7 +107,7 @@ namespace FanLiHang.Admins.Auth
         /// <returns></returns>
         public bool CheckPower(string power)
         {
-            return Powers.Contains(power);
+            return Powers.Count(x => x != null && x.ToLower().Equals(power)) > 0;
         }
     }
 }

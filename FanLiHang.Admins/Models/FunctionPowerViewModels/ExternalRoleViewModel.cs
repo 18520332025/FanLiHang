@@ -13,6 +13,10 @@ namespace FanLiHang.Admins.Models.FunctionPowerViewModels
             {
                 return RoleName;
             }
+            set
+            {
+                RoleName = value;
+            }
         }
 
 
@@ -21,6 +25,10 @@ namespace FanLiHang.Admins.Models.FunctionPowerViewModels
             get
             {
                 return FunctionPowerType.Role;
+            }
+            set
+            {
+                ;
             }
         }
     }

@@ -16,6 +16,7 @@ namespace FanLiHang.Model
             set;
         }
         [Display(Name = "部门名称")]
+
         public string Name
         {
             get;

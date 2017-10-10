@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using Dapper;
+using System.Linq;
+using System.Linq.Expressions;
 namespace FanLiHang.Data
 {
     public class RoleDataService : IRoleDataService
@@ -39,7 +41,7 @@ namespace FanLiHang.Data
         public List<RoleFunctionPower> GetPowers(int? roleID, int? appInfoID)
         {
 
-            string sql = @"select FunctionPower.*,RoleFunctionPower.*,Role.* from RoleFunctionPower 
+            string sql = @"select FunctionPower.*,RoleFunctionPower.*,Role.*,RoleFunctionPower.ID as RFPID from RoleFunctionPower 
                                 join FunctionPower on FunctionPower.ID = RoleFunctionPower.FunctionPowerID
                                 join [Role] on [Role] .ID = RoleFunctionPower.RoleID
                                 where 1=1";
@@ -77,6 +79,7 @@ namespace FanLiHang.Data
                     functionPower.AppInfoID = (int)dr["AppInfoID"];
                     roleFunctionPower.FunctionPower = functionPower;
                     roleFunctionPower.FunctionPowerID = functionPower.ID;
+                    roleFunctionPower.ID = (int)dr["RFPID"];
                     powers.Add(roleFunctionPower);
                 }
                 return powers;
@@ -91,6 +94,37 @@ namespace FanLiHang.Data
         public bool Update(Role role)
         {
             return dbHelper.Update(role);
+        }
+
+        public void UpdateFunctionPowers(int roleID, int appInfoID, int[] functionPowerIDList)
+        {
+            if (functionPowerIDList == null)
+                functionPowerIDList = new int[0];
+            var oldFunctionPowers = GetPowers(roleID, appInfoID);
+            int[] oldFunctionPowerIDList = oldFunctionPowers.Select(x => x.FunctionPowerID).ToArray();
+            var deleteFunctionPowers = oldFunctionPowerIDList.Except(functionPowerIDList);
+            var insertFunctionPowers = functionPowerIDList.Except(oldFunctionPowerIDList);
+
+            dbHelper.BeginTran();
+            try
+            {
+                foreach (var deleteItem in deleteFunctionPowers)
+                {
+                    var functionPower
+                        = oldFunctionPowers.Where(x => x.FunctionPowerID == deleteItem).First().ID;
+                    dbHelper.DeleteAsTran<RoleFunctionPower>(new RoleFunctionPower { ID = functionPower });
+                }
+                foreach (var insertItem in insertFunctionPowers)
+                {
+                    dbHelper.InsertAsTran<RoleFunctionPower>(new RoleFunctionPower { RoleID = roleID, FunctionPowerID = insertItem });
+                }
+                dbHelper.CommitTran();
+            }
+            catch (Exception ex)
+            {
+                dbHelper.RollbackTran();
+                throw ex;
+            }
         }
     }
 }

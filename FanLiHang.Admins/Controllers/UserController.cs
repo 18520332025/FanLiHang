@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using FanLiHang.Auth;
+using FanLiHang.Admins.Models.UserViewModels;
 
 namespace FanLiHang.Admins.Controllers
 {
@@ -31,6 +32,30 @@ namespace FanLiHang.Admins.Controllers
             ppd.SetDefaultValue(pageParameter);
             var pager = userInfoDataService.GetPager(pageParameter);
             return View(pager);
+        }
+
+        [AuthAciton]
+        public IActionResult RemoteLoginID(RemoteLoginIDModel model)
+        {
+           if (model.ID != "0")
+            {
+                var authorization = authorizationDataService.Get(int.Parse(model.ID));
+                if (authorization.LoginID.Equals(model.LoginID))
+                {
+                    return Content("true");
+                }
+
+            }
+            var list = authorizationDataService.GetListAtCache();
+            if (list.Where(x => x.LoginID == model.LoginID && x.AppInfoID == int.Parse(model.AppInfoID)).Count() > 0)
+            {
+                return Content("false");
+            }
+            else
+            {
+                return Content("true");
+            }
+
         }
 
         [AuthAciton]
@@ -113,8 +138,6 @@ namespace FanLiHang.Admins.Controllers
             {
                 return Json(new APIResult<string>(data: ""));
             }
-            //var user = userInfoDataService.Get(editUser.ID);
-            //return View(user);
         }
 
         [AuthAciton]

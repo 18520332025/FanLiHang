@@ -15,5 +15,6 @@ namespace FanLiHang.Data
         IEnumerable<Role> GetList();
         IEnumerable<Role> GetListByCatch();
         List<RoleFunctionPower> GetPowers(int? roleID, int? appInfoID);
+        void UpdateFunctionPowers(int RoleID, int AppInfoID, int[] functionPowerIDList);
     }
 }

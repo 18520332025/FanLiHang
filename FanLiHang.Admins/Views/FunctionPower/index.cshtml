@@ -84,12 +84,13 @@
     }
 
     function save() {
-
         $("#formFunctionPower").ajaxSubmit({
             url: '/functionPower/save',
-            success: function () {
-                modelMessage('保存成功');
-                window.location.reload(true);
+            success: function (data) {
+                successEvent(data, function (data) {
+                    modelMessage('保存成功');
+                    window.location.reload(true);
+                });
             }
         });
     }

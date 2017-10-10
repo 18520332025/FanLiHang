@@ -16,6 +16,7 @@
     <ProjectReference Include="..\FanLiHang.Dapper.Model.Attribute\FanLiHang.Dapper.Model.Attribute.csproj" />
     <ProjectReference Include="..\FanLiHang.Data\FanLiHang.Data.csproj" />
     <ProjectReference Include="..\FanLiHang.Model\FanLiHang.Model.csproj" />
+    <ProjectReference Include="..\ValidationExpand\FanLiHang.ValidationExpand.csproj" />
   </ItemGroup>
 
 </Project>

@@ -17,6 +17,7 @@ namespace FanLiHang.Dapper.Helper
         private IMemoryCache _cache;
         private IDBConnectionStringConfig _connectionStringConfig;
         private IDbConnection _dbConnection;
+        private IDbTransaction _dbTransaction;
         public DbHelper(IMemoryCache cache, IDBConnectionStringConfig connectionStringConfig, IDbConnection dbConnection)
         {
             this._cache = cache;
@@ -201,6 +202,7 @@ namespace FanLiHang.Dapper.Helper
             {
                 list.Add(Transformation(reader));
             }
+            reader.Close();
             PagerResultSet<T> prs = new PagerResultSet<T>(list, count, pager);
             return prs;
         }
@@ -232,6 +234,52 @@ namespace FanLiHang.Dapper.Helper
         public IDataReader GetReader(string sql, object obj)
         {
             return _dbConnection.ExecuteReader(sql, obj);
+        }
+
+        public IDbTransaction BeginTran()
+        {
+            if (_dbTransaction != null)
+            {
+                throw new Exception("有尚未提交的事务对象，请提交事务后再开启事务对象");
+            }
+            if (_dbConnection.State == ConnectionState.Closed)
+                _dbConnection.Open();
+            _dbTransaction = _dbConnection.BeginTransaction();
+            return _dbTransaction;
+        }
+
+        public void CommitTran()
+        {
+            if (_dbTransaction == null)
+                throw new Exception("事务对象未开启，无法进行提交操作");
+            _dbTransaction.Commit();
+            _dbTransaction.Dispose();
+            _dbConnection.Close();
+        }
+
+
+        public void RollbackTran()
+        {
+            if (_dbTransaction == null)
+                throw new Exception("事务对象未开启，无法进行回滚操作");
+            _dbTransaction.Rollback();
+            _dbTransaction.Dispose();
+            _dbConnection.Close();
+        }
+
+        public bool InsertAsTran<T>(T t)
+        {
+            return Insert<T>(t, _dbTransaction);
+        }
+
+        public bool DeleteAsTran<T>(T t)
+        {
+            return Delete<T>(t, _dbTransaction);
+        }
+
+        public bool UpdateAsTran<T>(T t)
+        {
+            return Update<T>(t, _dbTransaction);
         }
     }
 }

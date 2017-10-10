@@ -27,13 +27,16 @@ function reinitIframe(iframeId, minHeight) {
         } else //ie[6-8]、OPERA
             bHeight += 3;
         if (bHeight > 10) {
-            eval('window.clearInterval(' + iframeId.replace('if', 'int') + ')');
+            //eval('window.clearInterval(' + iframeId.replace('if', 'int') + ')');
         }
         var height = Math.max(bHeight, dHeight);
         if (height < minHeight) height = minHeight;
         iframe.style.height = height + "px";
+    }
+    catch (ex)
+    {
 
-    } catch (ex) { }
+    }
 }
 
 
@@ -67,11 +70,13 @@ function switchTab(option) {
     if ($('#tab_' + option.name).length == 0) {
         var tab = '<li id="tab_' + option.name + '"><a href="#' + option.name + '" data-toggle="tab">' + option.title + '　<i class="fa fa-close" style="cursor:pointer"></i></a></li>';
         $("#tab-refresh").before(tab);
-        var content = '<div class="tab-pane active" id="' + option.name + '"><iframe name="' + option.name + '" src="' + option.url + '" scrolling="no" frameborder="0" id="if_' + option.name + '"  style="width:100%"></iframe></div>';
+        var content = '<div class="tab-pane active" id="' + option.name + '"><iframe name="' + option.name + '" src="' + option.url + '" frameborder="0" id="if_' + option.name + '"  style="width:100%"></iframe></div>';
         $('#tab-content').append(content);
         eval('int_' + option.name + '= startIframeInit("if_" + option.name, 700)');
     }
     $('#tab_' + option.name).find('a').click();
+    $('a[data-functionName').parent().removeClass('active');
+    $('a[data-functionName="' + option.name + '"]').parent().addClass('active');
     bindCloseTab('#tab_' + option.name);
 }
 

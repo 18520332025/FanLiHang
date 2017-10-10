@@ -8,6 +8,7 @@ using FanLiHang.Model;
 using Microsoft.AspNetCore.Mvc;
 using FanLiHang.Admins.Extensions;
 using FanLiHang.Admins.Models.FunctionPowerViewModels;
+using FanLiHang.Auth;
 
 namespace FanLiHang.Admins.Controllers
 {
@@ -16,16 +17,19 @@ namespace FanLiHang.Admins.Controllers
         public IDepartmentDataService departmentDataService;
         public IRoleDataService roleDataService;
         public IFunctionPowerDataService powerDataService;
-        public AuthorizationController(IJWTAuth iJWTAuth, IDepartmentDataService departmentDataService, IFunctionPowerDataService powerDataService, IRoleDataService roleDataService) : base(iJWTAuth)
+        public IAppInfoDataService appInfoDataService;
+        public AuthorizationController(IJWTAuth iJWTAuth, IDepartmentDataService departmentDataService, IFunctionPowerDataService powerDataService, IRoleDataService roleDataService, IAppInfoDataService appInfoDataService) : base(iJWTAuth)
         {
             this.departmentDataService = departmentDataService;
             this.powerDataService = powerDataService;
             this.roleDataService = roleDataService;
+            this.appInfoDataService = appInfoDataService;
         }
 
         [AuthAciton]
-        public IActionResult Index(int ID)
+        public IActionResult Index(int? ID)
         {
+
             var departmentList = departmentDataService.GetList(new Dapper.Helper.PagerParameter { PageIndex = 1, PageSize = 99999999, OrderBy = "ID" },
                 x =>
             {
@@ -33,12 +37,44 @@ namespace FanLiHang.Admins.Controllers
                 x.HasPowers = false;
             }).Rows.MapperList<ExternalDepartmentViewModel, Department>();
             ViewBag.DepartmentList = departmentList;
-            ViewBag.AppInfoID = ID;
+            if (ID.HasValue)
+            {
+                ViewBag.AppInfoID = ID.Value;
+            }
+            else
+            {
+
+                var apps = appInfoDataService.GetList();
+                if (apps.Count() == 0)
+                    throw new Exception("错误，相关系统信息未配置");
+                else
+                    ViewBag.AppInfoID = apps.First().ID;
+            }
             return View();
 
         }
-
         [AuthAciton]
+        public IActionResult Save(AuthorizationSetting settings)
+        {
+            try
+            {
+                if (settings.Type == FunctionPowerType.Department)
+                {
+                    departmentDataService.UpdateFunctionPowers(settings.NodeID, settings.AppInfoID, settings.FunctionPowerIDList);
+                }
+                else if (settings.Type == FunctionPowerType.Role)
+                {
+                    roleDataService.UpdateFunctionPowers(settings.NodeID, settings.AppInfoID, settings.FunctionPowerIDList);
+                }
+                return Json(new APIResult<AuthorizationSetting>(settings));
+            }
+            catch (Exception ex)
+            {
+                return Json(new APIResult<AuthorizationSetting>(errors: ex.Message) { data = settings });
+            }
+        }
+
+        [AuthAciton("Authorization_Index")]
         public IActionResult GetPowers(AuthorizationQueryModel queryModel)
         {
             var powers = powerDataService.GetList(queryModel.AppInfoID).MapperList<ExternalFunctionPowerViewModel, FunctionPower>();

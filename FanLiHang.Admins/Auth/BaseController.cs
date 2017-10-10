@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Filters;
+using FanLiHang.Auth;
 
 namespace FanLiHang.Admins.Auth
 {
@@ -18,14 +19,26 @@ namespace FanLiHang.Admins.Auth
         }
     }
 
+    /// <summary>
+    /// 权限路由，注意权限名不分大小写
+    /// </summary>
     public class AuthAciton : ActionFilterAttribute
     {
-        private readonly string power;
+        public readonly static string NoAuth = "none";
+
+        private string power;
+        /// <summary>
+        /// 设定页面权限
+        /// </summary>
+        /// <param name="power"></param>
         public AuthAciton(string power)
         {
             this.power = power;
         }
-        public AuthAciton() : this("")
+        /// <summary>
+        /// 设定页面权限,默认以[Controller]_[Action]为权限
+        /// </summary>
+        public AuthAciton()
         {
         }
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -46,23 +59,46 @@ namespace FanLiHang.Admins.Auth
                     _BaseController._auth.ID = int.Parse(_BaseController.User.Claims.FirstOrDefault(x => x.Type == "ID").Value);
                 }
 
-                if (string.IsNullOrEmpty(power) || _BaseController._auth.CheckPower(power))
+                try
                 {
-                    try
+                    if (string.IsNullOrEmpty(power))
                     {
-                        _BaseController.ViewBag.Auth = _BaseController._auth;
-                        _BaseController.ViewBag.DocumentName = context.RouteData.Values["Controller"].ToString().ToLower() + "_" + context.RouteData.Values["Action"].ToString().ToLower();
-                        base.OnActionExecuting(context);
+                        power = (context.RouteData.Values["Controller"].ToString() + "_" + context.RouteData.Values["Action"].ToString());
                     }
-                    catch
+
+                    power = power.ToLower();
+                    if (power.Equals(NoAuth)
+                        || _BaseController._auth.CheckPower(power))
                     {
-                        context.Result = new RedirectResult("/login/index?action=" + context.HttpContext.Request.Path);
-                        return;
+                        try
+                        {
+                            _BaseController.ViewBag.Auth = _BaseController._auth;
+                            _BaseController.ViewBag.DocumentName = context.RouteData.Values["Controller"].ToString().ToLower() + "_" + context.RouteData.Values["Action"].ToString().ToLower();
+                            base.OnActionExecuting(context);
+                        }
+                        catch
+                        {
+                            context.Result = new RedirectResult("/login/index?action=" + context.HttpContext.Request.Path);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (context.HttpContext.Request.Headers.Keys.Count(x => x.Equals("X-Requested-With")) > 0
+                            && context.HttpContext.Request.Headers["X-Requested-With"].Equals("XMLHttpRequest"))
+                        {
+                            context.Result = _BaseController.Json(new APIResult<string>());
+                        }
+                        else
+                        {
+                            context.Result = new RedirectResult("/login/index?action=" + context.HttpContext.Request.Path);
+                            return;
+                        }                        
                     }
                 }
-                else
+                catch (AccessViolationException ex)
                 {
-                    new Exception("你没有该页面的操作权限");
+                    throw new Exception("<a href='/login/index'" + context.HttpContext.Request.Path + ">你没有该页面的操作权限，点击返回登录页</a>");
                 }
 
             }

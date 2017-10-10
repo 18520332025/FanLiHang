@@ -5903,3 +5903,14 @@ table.text-center th {
 .login-checkbox {
     margin-left: 20px;
 }
+
+.field-validation-error {
+    background-color: #ff7701;
+    color: #fff;
+    border-radius: 3px;
+    padding: 3px;
+    font-size: 12px;
+    border-color: red;
+    border-style: solid;
+    border-width: 1px;
+}

@@ -1,8 +1,6 @@
 ﻿using FanLiHang.Dapper.ModelData.Attribute;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+using System.ComponentModel.DataAnnotations; 
+using FanLiHang.ValidationExpand;
 
 namespace FanLiHang.Model
 {
@@ -35,13 +33,20 @@ namespace FanLiHang.Model
             get;
             set;
         }
+
         [Required]
+        [Remote(DataKey = new string[] { "LoginID", "ID" },
+            ErrorMessage = "系统内已存在该登录名，请使用其他登陆名",
+            Type = "Get",
+            Url = "/User/RemoteLoginID",
+            RemoteName = "RemoteLoginID")]
         [Display(Name = "AppID")]
         public int AppInfoID
         {
             get;
             set;
         }
+
         [Required]
         [Display(Name = "用户ID")]
         public int UserID
@@ -49,16 +54,22 @@ namespace FanLiHang.Model
             get;
             set;
         }
-        [Required]
-        [Display(Name = "登陆ID")]
+
+        [Required(ErrorMessage = "必须输入登录名")]
+        [Remote(DataKey = new string[] { "AppInfoID", "ID" },
+            ErrorMessage = "系统内已存在该登录名，请使用其他登陆名",
+            Type = "Get",
+            Url = "/User/RemoteLoginID",
+            RemoteName = "RemoteLoginID")]
+        [Display(Name = "登陆名")]
         public string LoginID
         {
             get;
             set;
         }
-        [Required]
-        
+        [Required(ErrorMessage = "必须输入密码")]
         [Display(Name = "登陆密码")]
+        [MinLength(8, ErrorMessage = "密码最小长度为8位")]
         [DataType(DataType.Password)]
         public string Password
         {

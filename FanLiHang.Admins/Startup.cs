@@ -16,6 +16,7 @@ using FanLiHang.Dapper.Helper;
 using System.Data;
 using FanLiHang.Admins.Auth;
 using Microsoft.Extensions.Caching.Memory;
+using FanLiHang.Mail;
 
 namespace FanLiHang.Admins
 {
@@ -54,7 +55,10 @@ namespace FanLiHang.Admins
             services.AddTransient<IDbHelper, DbHelper>();
             //配置数据处理
             ConfigureDBServices("FanLiHang.Data", services);
-
+            //配置邮件队列服务-连接
+            services.AddScoped<IMailConfig, SendCloudMailConfig>(x => Configuration.Get<SendCloudMailConfig>());
+            //配置邮件队列服务-发送器
+            services.AddScoped<IMailService, SendCloudMailService>();
             services.AddAuthentication(option => { option.DefaultAuthenticateScheme = "UserAuth"; })
                 .AddCookie("UserAuth", x =>
                 {

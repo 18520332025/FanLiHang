@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="~/css/AdminLTE.css">
     <link rel="stylesheet" href="~/css/datatables.css" />
+    <link href="~/css/skins/_all-skins.css" rel="stylesheet" />
     <!--皮肤-->
     <link rel="stylesheet" href="~/css/skins/skin-blue.css">
     <style type="text/css">
@@ -22,7 +23,7 @@
         }
     </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-purple sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <a href="/admin/index" class="logo">
@@ -93,14 +94,19 @@
                     </div>
                 </form>
                 <ul class="sidebar-menu tree" data-widget="tree">
-                    <li class="header">权限管理</li>
+                    @foreach (FunctionPower item in ViewBag.Powers)
+                    {
+                        if (item.Level == 1)
+                        {
+                            <li class="header">@item.FunctionName</li>
+                        }
+                        else
+                        {
+                            <li><a href="javascript:;" onclick="switchTab({name:'@item.Power',url:'@item.Url',title:'@item.FunctionName'})" data-functionName="@item.Power"><i class="fa fa-link"></i> <span>@item.FunctionName</span></a></li>
+                        }
+                    }
                     <!-- Optionally, you can add icons to the links -->
-                    <li class="active"><a href="javascript:;" onclick="switchTab({name:'department_index',url:'/department/index',title:'组织机构'})"><i class="fa fa-link"></i> <span>组织机构</span></a></li>
-                    <li><a href="javascript:;" onclick="switchTab({name:'Role_Index',url:'/Role/Index/1',title:'角色管理'})"><i class="fa fa-link"></i> <span>角色管理</span></a></li> 
-                    <li><a href="javascript:;" onclick="switchTab({name:'user_index',url:'/user/index',title:'用户管理'})"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
-                    <li><a href="javascript:;" onclick="switchTab({name:'functionPower_index',url:'/functionPower/index/1',title:'功能管理'})"><i class="fa fa-link"></i> <span>功能管理</span></a></li>
-                    <li><a href="javascript:;" onclick="switchTab({name:'authorization_index',url:'/Authorization/index/1',title:'权限管理'})"><i class="fa fa-link"></i> <span>权限管理</span></a></li>
-                    
+
                 </ul>
             </section>
         </aside>
@@ -138,9 +144,3 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 <script src="~/js/app.js"></script>
 <script type="text/javascript" src="~/js/tabManage.js"></script>
-@*<script>
-        $(function(){
-           int_admin_welcome= startIframeInit("if_admin_welcome",500);
-        });
-
-    </script>*@

@@ -28,7 +28,14 @@ namespace FanLiHang.Admins.Models.FunctionPowerViewModels
         {
             get
             {
-                return Roles.MapperList<ExternalRoleViewModel, Role>();
+                if (Roles != null)
+                {
+                    return Roles.MapperList<ExternalRoleViewModel, Role>();
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }

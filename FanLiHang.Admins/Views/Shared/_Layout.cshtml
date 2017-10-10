@@ -19,6 +19,10 @@
     <script src="~/js/modalManage.js"></script>
     <script src="~/js/imageHelper.js"></script>
     <script src="~/js/jquery.form.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/messages_cn.js"></script>
+    <script src="~/lib//jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/js/ajaxHelper.js"></script>
     <style type="text/css">
         .nav-tabs > li.active > a {
             border-radius: 15px 15px 0 0;
@@ -28,39 +32,6 @@
         function reloadThisPage() {
             window.parent.reloadTab("@ViewBag.DocumentName");
         }
-
-        $(function () {
-            $(".EditLabel").click(function () {
-                var id = $(this).attr("data-bind");
-                var actionName = $(this).attr("action-name");
-                var height = $(this).attr('model-height');
-                modelIfram(actionName + '/' + id, { height: height, title: '编辑'});
-            })
-
-
-            $(".DeleteLabel").click(function () {
-                var id = $(this).attr("data-bind");
-                var actionName = $(this).attr("action-name");
-                modelConfirm('是否删除所选?', {
-                    title: '确认删除',
-                    submit: function () {
-                        $.post(actionName + '/' + id,
-                            { ID: id },
-                            function (data) {
-                                if (data.stateCode == 200) {
-                                    modelMessage("删除成功", {
-                                        closeReload: true
-                                    });
-                                }
-                                else {
-                                    modelMessage("删除失败" + data.errors);
-                                }
-                            })
-                    }
-                })
-            })
-
-        })
 
 
     </script>

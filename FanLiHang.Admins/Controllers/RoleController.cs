@@ -23,19 +23,36 @@ namespace FanLiHang.Admins.Controllers
         }
 
         [AuthAciton]
-        public IActionResult Index(int ID, PagerParameter pagerParameter)
+        public IActionResult Index(int? ID, PagerParameter pagerParameter)
         {
+            var departmentList = departmentDataService.GetList().MapperList<ExternalDepartmentViewModel, Department>();
+
             PageParameterDefault ppd = new PageParameterDefault();
             ppd.SetDefaultValue(pagerParameter);
-            var pager = roleDataService.GetList(ID, pagerParameter);
-            var departmentList = departmentDataService.GetList().MapperList<ExternalDepartmentViewModel, Department>(); 
-            var selectDepartment = departmentDataService.Get(ID);
-            ViewBag.Department = selectDepartment;
-            ViewBag.DepartmentList = departmentList;
-            return View(pager);
+            Department department = new Department();
+            if (!ID.HasValue)
+            {
+                department = departmentList.First();
+            }
+            else
+            {
+                department = departmentDataService.Get(ID.Value);
+            }
+            if (department.ID != 0)
+            {
+                var pager = roleDataService.GetList(department.ID, pagerParameter);
+                ViewBag.Department = department;
+                ViewBag.DepartmentList = departmentList;
+                return View(pager);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [AuthAciton]
+        [HttpGet]
         public IActionResult Add(int ID)
         {
             Role role = new Role();
@@ -44,24 +61,43 @@ namespace FanLiHang.Admins.Controllers
         }
 
         [AuthAciton]
+        [HttpGet]
         public IActionResult Edit(int ID)
         {
             Role role = roleDataService.Get(ID);
             return View("add", role);
         }
+
         [AuthAciton]
+        [HttpPost]
+        public IActionResult Add(Role role)
+        {
+            roleDataService.Add(role);
+            return Json(new APIResult<Role>(data: role));
+        }
+
+        [AuthAciton]
+        [HttpPost]
+        public IActionResult Edit(Role role)
+        {
+            roleDataService.Update(role);
+            return Json(new APIResult<Role>(data: role));
+
+        }
+
+        [AuthAciton("none")]
+        [HttpPost]
         public IActionResult Save(Role role)
         {
             if (role.ID == 0)
             {
-                roleDataService.Add(role);
+                return RedirectToAction("Add");
             }
             else
             {
-                roleDataService.Update(role);
+                return RedirectToAction("Edit");
             }
 
-            return Json(new APIResult<Role>(data: role));
         }
     }
 }

@@ -54,9 +54,9 @@ namespace FanLiHang.Admins.Controllers
             }
         }
 
-        public IActionResult LoginOut()
+        public async Task<IActionResult> LoginOut()
         {
-            HttpContext.Response.Cookies.Delete("token");
+            await HttpContext.SignOutAsync("UserAuth");
             return new RedirectResult("/login/index");
         }
 

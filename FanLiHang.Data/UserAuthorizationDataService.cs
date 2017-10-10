@@ -39,7 +39,7 @@ namespace FanLiHang.Data
                                 join UserPower on UserPower.RoleID = [Role].ID
                                 join UserAuthorization on UserAuthorization.ID = UserPower.UserAuthorizationID
                                 where UserAuthorization.ID=@UserAuthorizationID and FunctionPower.AppInfoID = @SystemCode
-                                union all
+                                union 
                                 select FunctionPower.* from FunctionPower
                                 join DepartmentFunctionPower on DepartmentFunctionPower.FunctionPowerID = FunctionPower.ID 
                                 join Department on Department.ID = DepartmentFunctionPower.DepartmentID

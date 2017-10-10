@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Collections.Generic;
 using System;
+using System.Linq;
+using Fanlihang.TagHelpers.TagHelpers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures; 
 
 namespace Fanlihang.TagHelpers
 {
@@ -13,6 +16,11 @@ namespace Fanlihang.TagHelpers
             this.getVal = getVal;
             this.getText = getText;
         }
+
+        public override int Order { get { return 1; } }
+
+        [HtmlAttributeName("asp-for")]
+        public ModelExpression For { get; set; }
 
         public abstract IEnumerable<T> GetData();
 

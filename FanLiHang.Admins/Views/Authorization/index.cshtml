@@ -10,7 +10,6 @@
                     <h4><app-info-drop-down-list id="setAppID" class="form-control" selected="@ViewBag.AppInfoID"></app-info-drop-down-list></h4>
                 </div>
                 <div class="box-body">
-
                     <div id="tree">
 
                     </div>
@@ -26,7 +25,7 @@
                     <div id="power">
 
                     </div>
-                    <button type="submit" class="btn btn-danger" onclick="save()" id="formSubBtn">保存</button>
+                    <button type="submit" class="btn btn-info" onclick="save()" id="formSubBtn">保存</button>
                 </div>
             </div>
         </div>
@@ -51,7 +50,7 @@
         ques.nodeID = node.id;
         ques.appInfoID=@ViewBag.AppInfoID;
         var url = '/Authorization/GetPowers?Type=' + node.functionPowerType + '&nodeID=' + node.id + '&appInfoID=@ViewBag.AppInfoID';
-        $.getJSON(url, function (data) {
+        $.getJSON(url, function (data) {            
             $("#power").treeview({
                 data: data,
                 showCheckbox: true,
@@ -74,9 +73,12 @@
                 powerList[powerList.length] = nodes[i].id;
             }
         }
-        ques.powerList = powerList;
+        ques.FunctionPowerIDList = powerList;
+        ques.type = ques.functionPowerType;
         $.post('/Authorization/Save', ques, function (data) { 
-
+            successEvent(data, function (data) {
+                modelMessage("保存成功");
+            });
         }, 'json');
     }
 

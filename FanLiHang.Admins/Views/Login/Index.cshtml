@@ -57,48 +57,47 @@
     <script src="~/lib/jquery-cookie/jquery.cookie.js"></script>
     <script type="text/javascript">
         var accessToken = undefined;
-        $(function(){
+        $(function () {
             $("#getToken").click(function () {
                 $.post(
                     //"http://localhost:33071/api/TokenAuth",
                     "http://localhost:32815/Login/Login",
-                    { Username: $("#Username").prev().val(), Password:$("#Password").prev().val(),RememberUser:$("#RememberUser").is(":checked")},
+                    { Username: $("#Username").prev().val(), Password: $("#Password").prev().val(), RememberUser: $("#RememberUser").is(":checked") },
                     function (data) {
                         console.log(data);
-                        if (data.stateCode == 200)
-                        {
+                        if (data.stateCode == 200) {
                             accessToken = data.accessToken;
-                            if($("#RememberUser").is(":checked")){
-                                $.cookie('token',accessToken,{expires:180,path:'/'});
+                            if ($("#RememberUser").is(":checked")) {
+                                $.cookie('token', accessToken, { expires: 180, path: '/' });
                             }
-                            else{
-                                $.cookie('token',accessToken,{expires:1,path:'/'});
+                            else {
+                                $.cookie('token', accessToken, { expires: 1, path: '/' });
                             }
                             var reqUrl = getUrlParam('action');
-                            if(reqUrl == null){
-                                window.location.href='/admin/index';
+                            if (reqUrl == null) {
+                                window.location.href = '/admin/index';
                             }
-                            else{
-                                window.location.href=reqUrl;
+                            else {
+                                window.location.href = reqUrl;
                             }
                         }
-                        else{
+                        else {
                             alert(data.errors);
                         }
                     },
                     "json"
                 )
-        })
+            })
         });
 
 
-        function getUrlParam(name){
+        function getUrlParam(name) {
             //构造一个含有目标参数的正则表达式对象
-            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             //匹配目标参数
             var r = window.location.search.substr(1).match(reg);
             //返回参数值
-            if (r!=null) return unescape(r[2]);
+            if (r != null) return unescape(r[2]);
             return null;
         }
     </script>

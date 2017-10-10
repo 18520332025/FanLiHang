@@ -93,7 +93,7 @@ namespace FanLiHang.Data
 
         public List<DepartmentFunctionPower> GetPowers(int? departmentID, int? appInfoID)
         {
-            string sql = @"select DepartmentFunctionPower.ID as DFPID, FunctionPower.*,DepartmentFunctionPower.*,Department.* from DepartmentFunctionPower 
+            string sql = @"select DepartmentFunctionPower.ID as DFPID, FunctionPower.*,DepartmentFunctionPower.*,Department.*,DepartmentFunctionPower.ID as DFPID from DepartmentFunctionPower 
                                 join FunctionPower on FunctionPower.ID = DepartmentFunctionPower.FunctionPowerID
                                 join Department on Department.ID = DepartmentFunctionPower.DepartmentID
                                 where 1=1";
@@ -134,6 +134,7 @@ namespace FanLiHang.Data
                     functionPower.FatharFunctionID = (int)dr["FatharFunctionID"];
                     functionPower.AppInfoID = (int)dr["AppInfoID"];
                     departmentFunctionPower.FunctionPower = functionPower;
+                    departmentFunctionPower.ID = (int)dr["DFPID"];
                     departmentFunctionPower.FunctionPowerID = functionPower.ID;
                     powers.Add(departmentFunctionPower);
                 }
@@ -150,5 +151,38 @@ namespace FanLiHang.Data
         {
             return _dbHelper.Update(department);
         }
+
+        public void UpdateFunctionPowers(int DepartmentID, int AppinfoID, int[] functionPowerIDList)
+        {
+            if (functionPowerIDList == null)
+                functionPowerIDList = new int[0];
+            var oldFunctionPowers = GetPowers(DepartmentID, AppinfoID);
+            int[] oldFunctionPowerIDList = oldFunctionPowers.Select(x => x.FunctionPowerID).ToArray();
+            var deleteFunctionPowers = oldFunctionPowerIDList.Except(functionPowerIDList);
+            var insertFunctionPowers = functionPowerIDList.Except(oldFunctionPowerIDList);
+
+            _dbHelper.BeginTran();
+            try
+            {
+                foreach (var deleteItem in deleteFunctionPowers)
+                {
+                    var functionPower
+                        = oldFunctionPowers.Where(x => x.FunctionPowerID == deleteItem).First().ID;
+                    _dbHelper.DeleteAsTran<DepartmentFunctionPower>(new DepartmentFunctionPower { ID = functionPower });
+                }
+                foreach (var insertItem in insertFunctionPowers)
+                {
+                    _dbHelper.InsertAsTran<DepartmentFunctionPower>(new DepartmentFunctionPower
+                    { DepartmentID = DepartmentID, FunctionPowerID = insertItem });
+                }
+                _dbHelper.CommitTran();
+            }
+            catch (Exception ex)
+            {
+                _dbHelper.RollbackTran();
+                throw ex;
+            }
+        }
     }
 }
+

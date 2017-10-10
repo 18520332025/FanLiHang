@@ -23,7 +23,7 @@
                 </div>
                 <div class="box-body">
                     <button type="submit" class="btn btn-info" onclick="modelIfram('/Role/Add/@ViewBag.Department.ID',{height:120,title:'新建角色'})">新建角色</button>
-                    @if (Model.Rows.Count > 0)
+                    @if (Model != null && Model.Rows.Count > 0)
                     {
                         <table class="table table-bordered  dataTable" style="border-color:#eee">
                             <thead>

@@ -14,24 +14,33 @@ namespace FanLiHang.Admins.Controllers
     public class FunctionPowerController : BaseController
     {
         IFunctionPowerDataService functionPowerDataService;
-        public FunctionPowerController(IJWTAuth auth, IFunctionPowerDataService functionPowerDataService) : base(auth)
+        IAppInfoDataService appInfoDataService;
+        public FunctionPowerController(IJWTAuth auth, IFunctionPowerDataService functionPowerDataService, IAppInfoDataService appInfoDataService) : base(auth)
         {
             this.functionPowerDataService = functionPowerDataService;
+            this.appInfoDataService = appInfoDataService;
         }
 
         [AuthAciton]
-        public IActionResult Index(int ID)
+        public IActionResult Index(int? ID)
         {
-            var list = ExternalFunctionPowerSort.Sort(functionPowerDataService.GetList(ID).MapperList<ExternalFunctionPowerViewModel, FunctionPower>());
+            var appInfoList = appInfoDataService.GetList();
+            if (!ID.HasValue)
+            {
+                if (appInfoList.Count() == 0)
+                    throw new Exception("暂无程序信息");
+                ID = appInfoList.First().ID;
+            }
+            var list = ExternalFunctionPowerSort.Sort(functionPowerDataService.GetList(ID.Value).MapperList<ExternalFunctionPowerViewModel, FunctionPower>());
             ViewBag.List = list;
             FunctionPower functionPower = new FunctionPower
             {
-                AppInfoID = ID
+                AppInfoID = ID.Value
             };
             return View(functionPower);
         }
 
-        [AuthAciton]
+        [AuthAciton("FunctionPower_Edit")]
         public IActionResult Save(FunctionPower functionPower)
         {
             if (functionPower.ID == 0)

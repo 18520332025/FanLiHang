@@ -20,5 +20,12 @@ namespace FanLiHang.Dapper.Helper
         PagerResultSet<T1> GetModelList<T1, T2>(string sql, object obj, PagerParameter page, string Connection = null);
         PagerResultSet<T> GetModelList<T>(string sql, object obj, PagerParameter pager, Func<System.Data.IDataReader, T> Transformation, string Connecton = null);
         IDataReader GetReader(string sql, object obj);
+        IDbTransaction BeginTran();
+
+        bool InsertAsTran<T>(T t);
+        bool DeleteAsTran<T>(T t);
+        bool UpdateAsTran<T>(T t);
+        void CommitTran();
+        void RollbackTran();
     }
 }

@@ -15,6 +15,7 @@ namespace FanLiHang.Data
         bool Update(Department department);
         bool Remove(Department department);
         List<DepartmentFunctionPower> GetPowers(int? departmentID, int? appInfoID);
+        void UpdateFunctionPowers(int DepartmentID, int AppinfoID, int[] functionPowerIDList);
     }
 
     public interface IDepartmentDataLeave

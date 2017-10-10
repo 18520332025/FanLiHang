@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Http;
 using tokenJWT.Auth;
 using FanLiHang.Dapper.Helper;
 using System.Data;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace tokenJWT
 {
@@ -96,7 +97,7 @@ namespace tokenJWT
 
             });
 
-
+            //services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "DemoAPI", Version = "v1" }));
             //缓存注册
             services.AddMemoryCache();
             //配置连接注册
@@ -192,7 +193,11 @@ namespace tokenJWT
             {
                 routes.MapRoute(name: "default", template: "{controller=Login}/{action=Index}");
             });
-
+            //app.UseSwagger();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "DemoAPI V1");
+            //});
         }
 
     }

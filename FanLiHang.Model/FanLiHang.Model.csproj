@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FanLiHang.Dapper.Model.Attribute\FanLiHang.Dapper.Model.Attribute.csproj" />
+    <ProjectReference Include="..\ValidationExpand\FanLiHang.ValidationExpand.csproj" />
   </ItemGroup>
 
 </Project>

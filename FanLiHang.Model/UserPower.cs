@@ -33,7 +33,9 @@ namespace FanLiHang.Model
             set;
         }
 
-        public List<Role> Roles
+
+
+        public Role Role
         {
             get;
             set;
