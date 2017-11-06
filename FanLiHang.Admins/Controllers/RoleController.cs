@@ -64,7 +64,7 @@ namespace FanLiHang.Admins.Controllers
         [HttpGet]
         public IActionResult Edit(int ID)
         {
-            Role role = roleDataService.Get(ID);
+        Role role = roleDataService.Get(ID);
             return View("add", role);
         }
 

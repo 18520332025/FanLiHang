@@ -83,7 +83,6 @@ namespace FanLiHang.Dapper.Helper
             }
         }
         private int ViewPageCount = 11;
-        private int _pageCount;
 
         public int PageCount
         {

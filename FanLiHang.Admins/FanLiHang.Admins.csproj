@@ -10,7 +10,6 @@
     <PackageReference Include="bootstrap-treeview" Version="1.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
   </ItemGroup>
 
@@ -26,6 +25,7 @@
     <ProjectReference Include="..\FanLiHang.Data\FanLiHang.Data.csproj" />
     <ProjectReference Include="..\FanLiHang.Mail\FanLiHang.Mail.csproj" />
     <ProjectReference Include="..\FanLiHang.Model\FanLiHang.Model.csproj" />
+    <ProjectReference Include="..\FanLiHang.Rebis\FanLiHang.Redis.csproj" />
     <ProjectReference Include="..\Fanlihang.TagHelper\Fanlihang.TagHelpers.csproj" />
     <ProjectReference Include="..\FanLiHang.Token\FanLiHang.Auth.csproj" />
   </ItemGroup>

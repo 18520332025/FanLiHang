@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FanLiHang.Dapper.Model.Attribute", "FanLiHang.Dapper.Model.Attribute\FanLiHang.Dapper.Model.Attribute.csproj", "{B513DEE6-BE8B-4505-802F-A91D7E6FF46C}"
 EndProject
@@ -24,6 +24,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanLiHang.ValidationExpand", "ValidationExpand\FanLiHang.ValidationExpand.csproj", "{26781691-44EF-4A59-85B0-2FAE5EC42590}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanLiHang.Mail", "FanLiHang.Mail\FanLiHang.Mail.csproj", "{5D43E615-5A54-4A05-A4FE-D5DAFBCE6792}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanLiHang.Redis", "FanLiHang.Rebis\FanLiHang.Redis.csproj", "{909DF3DC-D7A7-45BB-9DA8-58E8B549B9FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanLiHang.OrderDownload", "FanLiHang.OrderDownload\FanLiHang.OrderDownload.csproj", "{F6DD74C4-E498-473A-9CB1-532B04298FC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanLiHang.Test", "FanLiHang.Test\FanLiHang.Test.csproj", "{31524F90-73F0-4CE2-BDB4-45667F463BB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +81,18 @@ Global
 		{5D43E615-5A54-4A05-A4FE-D5DAFBCE6792}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D43E615-5A54-4A05-A4FE-D5DAFBCE6792}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D43E615-5A54-4A05-A4FE-D5DAFBCE6792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909DF3DC-D7A7-45BB-9DA8-58E8B549B9FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909DF3DC-D7A7-45BB-9DA8-58E8B549B9FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909DF3DC-D7A7-45BB-9DA8-58E8B549B9FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909DF3DC-D7A7-45BB-9DA8-58E8B549B9FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6DD74C4-E498-473A-9CB1-532B04298FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6DD74C4-E498-473A-9CB1-532B04298FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6DD74C4-E498-473A-9CB1-532B04298FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6DD74C4-E498-473A-9CB1-532B04298FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31524F90-73F0-4CE2-BDB4-45667F463BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31524F90-73F0-4CE2-BDB4-45667F463BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31524F90-73F0-4CE2-BDB4-45667F463BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31524F90-73F0-4CE2-BDB4-45667F463BB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
