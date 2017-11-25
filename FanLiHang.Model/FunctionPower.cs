@@ -22,6 +22,7 @@ namespace FanLiHang.Model
             set;
         }
         [Display(Name = "Url")]
+        [Url(ErrorMessage ="Url地址不合法")] 
         public string Url
         {
             get;
